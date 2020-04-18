@@ -1,14 +1,17 @@
-from app.models import Stack, SpokenLanguage, User, InterestedMentor, Request
+from app.models import Skill, SpokenLanguage, User, RequestInterest, Request
 from rest_framework import serializers
 
 
-class StackSerializer(serializers.ModelSerializer):
+class SkillSerializer(serializers.ModelSerializer):
+    Proficiency = serializers.CharField()
+
     class Meta:
-        model = Stack
+        model = Skill
         fields = ['name', 'proficiency']
 
 
 class SpokenLanguageSerializer(serializers.ModelSerializer):
+    Proficiency = serializers.CharField()
 
     class Meta:
         model = SpokenLanguage
@@ -16,53 +19,55 @@ class SpokenLanguageSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    stacks = StackSerializer(many=True)
+    skills = SkillSerializer(many=True)
     spoken_languages = SpokenLanguageSerializer(many=True)
+    Role = serializers.CharField()
+    Pronoun = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = User
         fields = [
             'user_id',
-            'mentor',
-            'mentee',
+            'role',
             'display_name',
+            'pronoun',
             'about',
             'avatar',
-            'stacks',
-            'pronouns',
+            'skills',
+            'pronoun',
             'spoken_languages',
             'timezone',
             'availability'
         ]
 
     def create(self, validated_data):
-        stacks_data = validated_data.pop('stacks')
+        skills_data = validated_data.pop('skills')
         languages_data = validated_data.pop('spoken_languages')
-        user = User.objects.create(**validated_data)
-        for stack_data in stacks_data:
-            Stack.objects.create(user=user, **stack_data)
+
+        for skill_data in skills_data:
+            Skill.objects.create(**skill_data)
         for language_data in languages_data:
-            SpokenLanguage.objects.create(user=user, **language_data)
+            SpokenLanguage.objects.create(**language_data)
+
+        user = User.objects.create(**validated_data)
         return user
 
 
-class InterestedMentorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = InterestedMentor
-        fields = [
-            'name',
-            'personalised_note',
-            'accepted'
-        ]
+# class RequestInterestedMentorSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = InterestedMentor
+#         fields = [
+#             'name',
+#             'personalised_note',
+#             'accepted'
+#         ]
 
 
-class RequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Request
-        fields = [
-            'stack',
-            'description',
-            'mentee',
-            'interested_mentors',
-            'matched_mentor'
-        ]
+# class RequestSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Request
+#         fields = [
+#             'skill',
+#             'description',
+#             'requester'
+#         ]

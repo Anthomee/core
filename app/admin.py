@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Stack, SpokenLanguage, Request, InterestedMentor
+from .models import User, Skill, SpokenLanguage, Request, RequestInterest
 
 
 # class UserAdmin (admin.ModelAdmin):
@@ -8,7 +8,7 @@ from .models import User, Stack, SpokenLanguage, Request, InterestedMentor
 
 # Add user admin function to registered user if need be
 admin.site.register(User)
-admin.site.register(Stack)
+admin.site.register(Skill)
 admin.site.register(SpokenLanguage)
 admin.site.register(Request)
-admin.site.register(InterestedMentor)
+admin.site.register(RequestInterest)
