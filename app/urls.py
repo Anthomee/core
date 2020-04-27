@@ -1,12 +1,28 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from app import views
-
-router = DefaultRouter()
-router.register(r'skills', views.SkillViewSet)
-router.register(r'languages', views.SpokenLanguageViewSet)
-router.register(r'users', views.UserViewSet)
+from django.urls import path
+from .views.skill import (
+    SkillProficiencyList,
+    SkillProficiencyDetail,
+    SkillList,
+    SkillDetail
+)
+from .views.language import (
+    LanguageProficiencyList,
+    LanguageProficiencyDetail,
+    LanguageList,
+    LanguageDetail
+)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('skillproficiency/', SkillProficiencyList.as_view(), name="proficiency_list"),
+    path('skillproficiency/<int:pk>/', SkillProficiencyDetail.as_view(), name="proficiency_detail"),
+    path('skills/', SkillList.as_view(), name="skill_list"),
+    path('skills/<int:pk>/', SkillDetail.as_view(), name='skill_list'),
+    path('languageproficiency/', LanguageProficiencyList.as_view(),
+    name='languageproficiency_list'),
+    path('languageproficiency/<int:pk>/', LanguageProficiencyDetail.as_view(),
+    name='languageproficiency_detail'),
+    path('languages/', LanguageList.as_view(),
+    name='language_list'),
+    path('languages/<int:pk>/', LanguageDetail.as_view(),
+    name='language_detail'),
 ]
