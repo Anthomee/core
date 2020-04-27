@@ -1,28 +1,65 @@
-from app.models import Skill, SpokenLanguage, User, RequestInterest, Request
+from app.models import Skill, SpokenLanguage, User, RequestInterest, Request, Role, Pronoun, SpokenLanguage, LanguageProficiency, SkillProficiency
 from rest_framework import serializers
 
 
+class RoleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Role
+        fields = ['role']
+
+
+class SkillProficiencySerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = SkillProficiency
+        fields = ['id', 'level']
+
+
 class SkillSerializer(serializers.ModelSerializer):
-    Proficiency = serializers.CharField()
 
     class Meta:
         model = Skill
-        fields = ['name', 'proficiency']
+        fields = ['id', 'name', 'proficiency']
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['proficiency'] = SkillProficiencySerializer(instance.proficiency).data
+        return response
+
+
+class LanguageProficiencySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LanguageProficiency
+        fields = ['id', 'level']
 
 
 class SpokenLanguageSerializer(serializers.ModelSerializer):
-    Proficiency = serializers.CharField()
 
     class Meta:
         model = SpokenLanguage
-        fields = ['name', 'proficiency']
+        fields = ['id', 'name', 'proficiency']
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['proficiency'] = SkillProficiencySerializer(instance.proficiency).data
+        return response
+
+
+class PronounSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Pronoun
+        fields = ['pronoun']
 
 
 class UserSerializer(serializers.ModelSerializer):
     skills = SkillSerializer(many=True)
     spoken_languages = SpokenLanguageSerializer(many=True)
-    Role = serializers.CharField()
-    Pronoun = serializers.CharField(required=False, allow_blank=True)
+    role = RoleSerializer(many=True)
+    pronoun = PronounSerializer(many=True, required=False)
 
     class Meta:
         model = User
@@ -30,7 +67,6 @@ class UserSerializer(serializers.ModelSerializer):
             'user_id',
             'role',
             'display_name',
-            'pronoun',
             'about',
             'avatar',
             'skills',
@@ -39,18 +75,6 @@ class UserSerializer(serializers.ModelSerializer):
             'timezone',
             'availability'
         ]
-
-    def create(self, validated_data):
-        skills_data = validated_data.pop('skills')
-        languages_data = validated_data.pop('spoken_languages')
-
-        for skill_data in skills_data:
-            Skill.objects.create(**skill_data)
-        for language_data in languages_data:
-            SpokenLanguage.objects.create(**language_data)
-
-        user = User.objects.create(**validated_data)
-        return user
 
 
 # class RequestInterestedMentorSerializer(serializers.ModelSerializer):
