@@ -76,7 +76,8 @@ class SkillProficiency(models.Model):
     level = models.CharField(
         max_length=3,
         choices=PROFICIENCY,
-        null=False
+        null=False,
+        unique=True
     )
 
     def __str__(self):
@@ -84,7 +85,7 @@ class SkillProficiency(models.Model):
 
 
 class Skill(models.Model):
-    name = models.CharField(max_length=100, null=False)
+    name = models.CharField(max_length=100, null=False, unique=True)
 
     proficiency = models.ForeignKey(SkillProficiency, on_delete=models.CASCADE)
 
@@ -105,7 +106,9 @@ class LanguageProficiency(models.Model):
     level = models.CharField(
         max_length=5,
         choices=PROFICIENCY,
-        null=False
+        null=False,
+        unique=True
+
     )
 
     def __str__(self):
@@ -149,7 +152,7 @@ class Request(models.Model):
     )
 
     def __str__(self):
-        return self.requester.display_name
+        return self.mentee.display_name
 
 
 class RequestInterest(models.Model):
