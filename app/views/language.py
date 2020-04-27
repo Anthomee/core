@@ -21,6 +21,7 @@ class LanguageList(generics.ListCreateAPIView):
     queryset = SpokenLanguage.objects.all()
     serializer_class = SpokenLanguageSerializer
 
+
 class LanguageDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = SpokenLanguage.objects.all()

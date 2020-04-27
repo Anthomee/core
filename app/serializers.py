@@ -1,4 +1,7 @@
-from app.models import Skill, SpokenLanguage, User, RequestInterest, Request, Role, Pronoun, SpokenLanguage, LanguageProficiency, SkillProficiency
+from app.models import (
+    Skill, SpokenLanguage, User, Role, Pronoun, SpokenLanguage,
+    LanguageProficiency, SkillProficiency
+)
 from rest_framework import serializers
 
 
@@ -10,7 +13,6 @@ class RoleSerializer(serializers.ModelSerializer):
 
 
 class SkillProficiencySerializer(serializers.ModelSerializer):
-
 
     class Meta:
         model = SkillProficiency
@@ -44,7 +46,7 @@ class SpokenLanguageSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
-        response['proficiency'] = SkillProficiencySerializer(instance.proficiency).data
+        response['proficiency'] = LanguageProficiencySerializer(instance.proficiency).data
         return response
 
 
