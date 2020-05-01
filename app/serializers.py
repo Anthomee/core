@@ -58,10 +58,10 @@ class PronounSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    skills = SkillSerializer(many=True)
-    spoken_languages = SpokenLanguageSerializer(many=True)
-    role = RoleSerializer(many=True)
-    pronoun = PronounSerializer(many=True, required=False)
+    # skills = SkillSerializer()
+    # spoken_languages = SpokenLanguageSerializer()
+    # role = RoleSerializer(many=True)
+    # pronoun = PronounSerializer(many=True, required=False)
 
     class Meta:
         model = User
@@ -78,6 +78,10 @@ class UserSerializer(serializers.ModelSerializer):
             'availability'
         ]
 
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['role'] = RoleSerializer(instance.role).data
+        return response
 
 # class RequestInterestedMentorSerializer(serializers.ModelSerializer):
 #     class Meta:
