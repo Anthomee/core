@@ -1,5 +1,5 @@
 from app.models import (
-    Skill, SpokenLanguage, User, Role, Pronoun, SpokenLanguage,
+    Skill, SpokenLanguage, User, Role, Pronoun,
     LanguageProficiency, SkillProficiency
 )
 from rest_framework import serializers
