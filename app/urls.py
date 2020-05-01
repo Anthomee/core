@@ -12,6 +12,11 @@ from .views.language import (
     LanguageDetail
 )
 
+from .views.user import (
+    UserList,
+    UserDetail
+)
+
 urlpatterns = [
     path(
         'skillproficiency/',
@@ -53,4 +58,14 @@ urlpatterns = [
         LanguageDetail.as_view(),
         name='language_detail'
         ),
+    path(
+        'users/',
+        UserList.as_view(),
+        name='user_list'
+    ),
+    path(
+        'users/<int:pk>',
+        UserDetail.as_view(),
+        name='user_detail'
+        )
 ]
