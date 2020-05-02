@@ -1,4 +1,7 @@
-from django.urls import path
+from django.urls import path, include
+
+from rest_framework.routers import DefaultRouter
+
 from .views.skill import (
     SkillProficiencyList,
     SkillProficiencyDetail,
@@ -13,9 +16,11 @@ from .views.language import (
 )
 
 from .views.user import (
-    UserList,
-    UserDetail
+    UserViewSet
 )
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet, basename='user')
 
 urlpatterns = [
     path(
@@ -59,13 +64,6 @@ urlpatterns = [
         name='language_detail'
         ),
     path(
-        'users/',
-        UserList.as_view(),
-        name='user_list'
-    ),
-    path(
-        'users/<int:pk>',
-        UserDetail.as_view(),
-        name='user_detail'
-        )
+        '', include(router.urls),
+    )
 ]
