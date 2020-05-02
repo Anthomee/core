@@ -72,7 +72,7 @@ class UserSerializer(serializers.ModelSerializer):
             'spoken_languages',
             'timezone',
             'availability'
-        ]     
+        ]
 
 # class RequestInterestedMentorSerializer(serializers.ModelSerializer):
 #     class Meta:
